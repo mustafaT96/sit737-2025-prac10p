@@ -14,8 +14,7 @@ spec:
     spec:
       containers:
       - name: calculator
-        image: calculator-microservice:latest
-        imagePullPolicy: Never
+        image: australia-southeast1-docker.pkg.dev/sit737-25t1-tariq-4b52e3f/calculator-repo/calculator-microservice
         ports:
         - containerPort: 3000
         livenessProbe:
@@ -24,3 +23,17 @@ spec:
             port: 3000
           initialDelaySeconds: 15
           periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+      restartPolicy: Always
